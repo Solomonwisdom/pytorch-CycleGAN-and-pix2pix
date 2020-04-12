@@ -3,7 +3,7 @@ import os
 import sys
 import ntpath
 import time
-from . import util, html
+from . import util
 from subprocess import Popen, PIPE
 
 
@@ -160,7 +160,7 @@ class Visualizer():
                 image_numpy = util.tensor2im(image)
                 img_path = os.path.join(self.img_dir, 'epoch%.3d_%s.png' % (epoch, label))
                 util.save_image(image_numpy, img_path)
-
+            from . import html
             # update website
             webpage = html.HTML(self.web_dir, 'Experiment name = %s' % self.name, refresh=1)
             for n in range(epoch, 0, -1):
