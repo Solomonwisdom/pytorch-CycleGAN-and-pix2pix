@@ -46,7 +46,7 @@ if __name__ == '__main__':
     model.setup(opt)               # regular setup: load and print networks; create schedulers
     visualizer = Visualizer(opt)   # create a visualizer that display/save images and plots
     total_iters = 0                # the total number of training iterations
-
+    result = 0.0
     for epoch in range(opt.epoch_count, opt.n_epochs + opt.n_epochs_decay + 1):    # outer loop for different epochs; we save the model by <epoch_count>, <epoch_count>+<save_latest_freq>
         epoch_start_time = time.time()  # timer for entire epoch
         iter_data_time = time.time()    # timer for data loading per iteration
@@ -71,6 +71,7 @@ if __name__ == '__main__':
             if total_iters % opt.print_freq == 0:    # print training losses and save logging information to the disk
                 losses = model.get_current_losses()
                 t_comp = (time.time() - iter_start_time) / opt.batch_size
+                result = float(losses['D_B'])
                 visualizer.print_current_losses(epoch, epoch_iter, losses, t_comp, t_data)
                 if opt.display_id > 0:
                     visualizer.plot_current_losses(epoch, float(epoch_iter) / dataset_size, losses)
@@ -88,3 +89,8 @@ if __name__ == '__main__':
 
         print('End of epoch %d / %d \t Time Taken: %d sec' % (epoch, opt.n_epochs + opt.n_epochs_decay, time.time() - epoch_start_time))
         model.update_learning_rate()                     # update learning rates at the end of every epoch.
+
+        report_loss(result)
+        report_intermediate_result(result)
+
+    report_final_result(result)
