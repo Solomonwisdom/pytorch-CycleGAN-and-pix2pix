@@ -2,7 +2,7 @@
 	"trailConcurrency": 2,
 	"num": 8,
 	"tuner": "random",
-	"target": "maximize",
+	"target": "minimize",
 	"gpuNum": 1,
 	"trainer": "pytorch",
 	"searchSpace": {
